@@ -92,7 +92,7 @@ public class SearchActivity extends AppCompatActivity{
                 }
                 for (int i = 0; i < mExistData.size(); i++) {
                     if (mExistData.get(i).getUID().equals(p2PParam.getUID())) {
-                        p2PParam.setState("已添加");
+                        p2PParam.setStateString("已添加");
                         break;
                     }
                 }

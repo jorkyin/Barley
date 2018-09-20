@@ -1,75 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/Rim"
     tools:context="com.jorkyin.barley.activity.ui.LiveActivity">
 
-    <TextView
-        android:id="@+id/live_state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/live_surfacView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:text="                      " />
+    <include
+        android:id="@+id/title_layout"
+        layout="@layout/public_header" />
 
-    <TextView
-        android:id="@+id/live_networkSpeed"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/live_surfacView"
-        android:layout_toEndOf="@+id/live_state"
-        android:layout_toRightOf="@+id/live_state"
-        android:text="                      " />
-
-    <ImageView
-        android:id="@+id/live_back"
-        android:layout_width="33dp"
-        android:layout_height="33dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:src="@mipmap/icon_return" />
-
-    <SurfaceView
-        android:id="@+id/live_surfacView"
+    <TextureView
+        android:id="@+id/video_texture"
         android:layout_width="match_parent"
-        android:layout_height="191dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true" />
+        android:layout_height="200dp"
+        app:layout_constraintTop_toBottomOf="@+id/title_layout" />
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/control_constraint"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="#323232"
+        android:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@+id/video_texture">
+
+
+        <ImageView
+            android:id="@+id/btn_voice"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/radius_rim"
+            android:src="@mipmap/chat_video_unvoice_dis"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/btn_resolution"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/textview_border"
+            android:gravity="center"
+            android:text="流畅"
+            android:textColor="@color/textButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_voice"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/rec_status"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:src="@mipmap/ae_icon_record"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_resolution"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <ImageView
+            android:id="@+id/btn_video_enlarge"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:contentDescription="sss"
+            android:src="@mipmap/chat_video_enlarge_dis"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/live_full_or_portrait"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/live_surfacView"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:src="@mipmap/magnify_white" />
-
-    <ImageView
-        android:id="@+id/live_photo"
-        android:layout_width="33dp"
-        android:layout_height="33dp"
+        android:id="@+id/btn_photo"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="62dp"
-        android:layout_marginLeft="68dp"
-        android:layout_marginStart="68dp"
-        android:src="@mipmap/bt_ic_camera" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:src="@mipmap/bt_ic_camera"
+        android:background="@drawable/max_radius_rim"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/control_constraint" />
 
     <ImageView
-        android:id="@+id/live_rec"
-        android:layout_width="33dp"
-        android:layout_height="33dp"
-        android:layout_alignTop="@+id/live_photo"
-        android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_toLeftOf="@+id/live_full_or_portrait"
-        android:layout_toStartOf="@+id/live_full_or_portrait"
+        android:id="@+id/btn_rec"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="8dp"
         android:src="@mipmap/video"
+        android:background="@drawable/max_radius_rim"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/control_constraint"
         tools:ignore="MissingConstraints" />
 
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

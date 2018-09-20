@@ -16,7 +16,8 @@ public class P2PParam {
     private String mUser=null;
     private String mPassword=null;
     private String mIP=null;
-    private String mState=null;
+    private String mStateString =null;
+    private int mStateValue =-1;
     private String mMac=null;
     private int mPort=0;
 
@@ -35,17 +36,6 @@ public class P2PParam {
         this.mUID = UID;
         this.mUser = user;
         this.mPassword = password;
-    }
-
-    public P2PParam(String UID, String ip, String state) {
-        this.mUID = UID;
-        this.mIP = ip;
-        this.mState = state;
-    }
-
-    public P2PParam(String uid,String state) {
-        this.mUID = uid;
-        this.mState = state;
     }
 
     public String getUID() {
@@ -81,12 +71,20 @@ public class P2PParam {
         this.mIP = IP;
     }
 
-    public String getState() {
-       return mState;
+    public String getStateString() {
+       return mStateString;
     }
 
-    public void setState(String state) {
-        this.mState = state;
+    public void setStateString(String state) {
+        this.mStateString = state;
+    }
+
+    public int getStateValue() {
+        return mStateValue;
+    }
+
+    public void setStateValue(int mStateValue) {
+        this.mStateValue = mStateValue;
     }
 
     public String getCamName() {
@@ -112,4 +110,6 @@ public class P2PParam {
     public void setPort(int mPort) {
         this.mPort = mPort;
     }
+
+
 }

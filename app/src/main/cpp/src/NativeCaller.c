@@ -14,7 +14,7 @@ Java_com_jorkyin_barley_model_NativeCaller_setCallBackContext(JNIEnv *env, jclas
                                                               jobject object) {
 
 //初始化java回调中的方法，用于将消息已反向调用的方式返回回去
-    if(NativeCallBack_init(env,type,object)!=0){
+    if (NativeCallBack_init(env, type, object) != 0) {
         return -1;
     }
 
@@ -27,7 +27,7 @@ JNIEXPORT jint JNICALL
 Java_com_jorkyin_barley_model_NativeCaller_RTSDKInit(JNIEnv *env, jclass type) {
 
     RT_APP_Params appInitParams;
-    memset(&appInitParams,0, sizeof(RT_APP_Params));
+    memset(&appInitParams, 0, sizeof(RT_APP_Params));
 
     /*回调注册区*/
     //获取信息回调
@@ -55,7 +55,7 @@ Java_com_jorkyin_barley_model_NativeCaller_RTSDKInit(JNIEnv *env, jclass type) {
     //日志回调
     //RT_LOG_REGISTER_CALL_Back(showLog1);
 
-    if (RT_APP_API_Initial(&appInitParams) != 0){
+    if (RT_APP_API_Initial(&appInitParams) != 0) {
         LOGD("-----------RT_APP_API_Initial failed-------------\n");
         return -1;
     }
@@ -90,7 +90,7 @@ Java_com_jorkyin_barley_model_NativeCaller_StartConnectDev(JNIEnv *env, jclass t
     const char *user = (*env)->GetStringUTFChars(env, user_, 0);
     const char *password = (*env)->GetStringUTFChars(env, password_, 0);
     const char *userData = (*env)->GetStringUTFChars(env, userData_, 0);
-    RT_APP_UPTR u32AppHandle=0;
+    RT_APP_UPTR u32AppHandle = 0;
     RT_APP_API_Start(&u32AppHandle, (RT_APP_CHAR *) UID, (RT_APP_CHAR *) user,
                      (RT_APP_CHAR *) password, (void *) userData);
 
@@ -108,12 +108,156 @@ Java_com_jorkyin_barley_model_NativeCaller_StartConnectDev(JNIEnv *env, jclass t
 JNIEXPORT void JNICALL
 Java_com_jorkyin_barley_model_NativeCaller_StopConnectDev(JNIEnv *env, jclass type, jstring UID_) {
     const char *UID = (*env)->GetStringUTFChars(env, UID_, 0);
-    RT_APP_UPTR u32AppHandle=0;
+
+    RT_APP_UPTR u32AppHandle = 0;
     RT_GetHandleFromMap(UID, &u32AppHandle);
+    if (u32AppHandle != 0) {
+        RT_APP_API_Stop(u32AppHandle, (RT_APP_CHAR *) UID);
+        //删除map中的handle
+        RT_DeleteHanleFromMap(UID);
+    }
 
-    RT_APP_API_Stop(u32AppHandle, (RT_APP_CHAR *) UID);
-
-    //删除map中的handle
-    RT_DeleteHanleFromMap(UID);
     (*env)->ReleaseStringUTFChars(env, UID_, UID);
+}
+
+//开启视频流
+JNIEXPORT jint JNICALL
+Java_com_jorkyin_barley_model_NativeCaller_StartLiveStream(JNIEnv *env, jclass type, jstring UID_,
+                                                           jint streamid) {
+    const char *UID = (*env)->GetStringUTFChars(env, UID_, 0);
+
+    RT_APP_UPTR u32AppHandle = 0;
+    RT_GetHandleFromMap(UID, &u32AppHandle);//通过map获取设备句柄
+
+    if (u32AppHandle != 0) {
+        //开始播放视频流
+        RT_APP_API_START_LIVE_Stream(u32AppHandle, (RT_APP_CHAR *) UID, streamid);
+    } else {
+        (*env)->ReleaseStringUTFChars(env, UID_, UID);
+        return -1;
+    }
+
+
+    (*env)->ReleaseStringUTFChars(env, UID_, UID);
+    return 0;
+}
+
+//停止播放视频流
+JNIEXPORT jint JNICALL
+Java_com_jorkyin_barley_model_NativeCaller_StopLiveStream(JNIEnv *env, jclass type, jstring UID_) {
+    const char *UID = (*env)->GetStringUTFChars(env, UID_, 0);
+
+    RT_APP_UPTR u32AppHandle = 0;
+    RT_GetHandleFromMap(UID, &u32AppHandle);//通过map获取设备句柄
+
+    if (u32AppHandle != 0) {
+        //停止播放视频流
+        RT_APP_API_STOP_LIVE_Stream(u32AppHandle, (RT_APP_CHAR *) UID);
+    } else {
+        (*env)->ReleaseStringUTFChars(env, UID_, UID);
+        return -1;
+    }
+
+    (*env)->ReleaseStringUTFChars(env, UID_, UID);
+    return 0;
+}
+
+/*码流切换API*/
+JNIEXPORT jint JNICALL
+Java_com_jorkyin_barley_model_NativeCaller_SwitchLiveStream(JNIEnv *env, jclass type, jstring UID_,
+                                                            jint streamid) {
+    const char *UID = (*env)->GetStringUTFChars(env, UID_, 0);
+
+    RT_APP_UPTR u32AppHandle = 0;
+    RT_GetHandleFromMap(UID, &u32AppHandle);//通过map获取设备句柄
+
+    if (u32AppHandle != 0) {
+        //开始播放视频流
+        RT_APP_API_SWITCH_Stream(u32AppHandle, (RT_APP_CHAR *) UID, streamid);
+    } else {
+        (*env)->ReleaseStringUTFChars(env, UID_, UID);
+        return -1;
+    }
+
+    (*env)->ReleaseStringUTFChars(env, UID_, UID);
+    return 0;
+}
+
+/*实时音频监听开始*/
+JNIEXPORT jint JNICALL
+Java_com_jorkyin_barley_model_NativeCaller_StartLiveAudio(JNIEnv *env, jclass type, jstring UID_,
+                                                          jint audioType) {
+    const char *UID = (*env)->GetStringUTFChars(env, UID_, 0);
+
+    RT_APP_UPTR u32AppHandle = 0;
+    RT_GetHandleFromMap(UID, &u32AppHandle);//通过map获取设备句柄
+
+    if (u32AppHandle != 0) {
+        RT_APP_API_START_Audio(u32AppHandle, (RT_APP_CHAR *) UID, ENUM_AUDIO_TYPE_AAC);
+    }
+
+    (*env)->ReleaseStringUTFChars(env, UID_, UID);
+    return 0;
+}
+
+/*实时音频监听结束*/
+JNIEXPORT jint JNICALL
+Java_com_jorkyin_barley_model_NativeCaller_StopLiveAudio(JNIEnv *env, jclass type, jstring UID_) {
+    const char *UID = (*env)->GetStringUTFChars(env, UID_, 0);
+    RT_APP_UPTR u32AppHandle = 0;
+    RT_GetHandleFromMap(UID, &u32AppHandle);//通过map获取设备句柄
+
+    if (u32AppHandle != 0) {
+        RT_APP_API_STOP_Audio(u32AppHandle, (RT_APP_CHAR *) UID);
+    }
+
+    (*env)->ReleaseStringUTFChars(env, UID_, UID);
+    return 0;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_jorkyin_barley_model_NativeCaller_StartLiveTalk(JNIEnv *env, jclass type, jstring UID_) {
+    const char *UID = (*env)->GetStringUTFChars(env, UID_, 0);
+
+    RT_APP_UPTR u32AppHandle = 0;
+    RT_GetHandleFromMap(UID, &u32AppHandle);//通过map获取设备句柄
+
+    if (u32AppHandle != 0) {
+        RT_APP_API_START_Talk(u32AppHandle, (RT_APP_CHAR *) UID);
+    }
+
+    (*env)->ReleaseStringUTFChars(env, UID_, UID);
+    return 0;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_jorkyin_barley_model_NativeCaller_StartLiveTalkAudioData(JNIEnv *env, jclass type,
+                                                                  jstring UID_, jint streamid) {
+    const char *UID = (*env)->GetStringUTFChars(env, UID_, 0);
+
+    // TODO
+
+    (*env)->ReleaseStringUTFChars(env, UID_, UID);
+    return 0;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_jorkyin_barley_model_NativeCaller_StopLiveTalk(JNIEnv *env, jclass type, jstring UID_) {
+    const char *UID = (*env)->GetStringUTFChars(env, UID_, 0);
+
+    RT_APP_UPTR u32AppHandle = 0;
+    RT_GetHandleFromMap(UID, &u32AppHandle);//通过map获取设备句柄
+
+    if (u32AppHandle != 0) {
+        RT_APP_API_STOP_Talk(u32AppHandle, (RT_APP_CHAR *) UID);
+    }
+
+    (*env)->ReleaseStringUTFChars(env, UID_, UID);
+    return 0;
+}
+
+JNIEXPORT jint JNICALL
+Java_com_jorkyin_barley_model_NativeCaller_InitFFmpeg(JNIEnv *env, jclass type, jobject surface) {
+
+    return 0;
 }

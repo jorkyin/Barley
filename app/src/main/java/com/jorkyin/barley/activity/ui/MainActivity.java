@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
@@ -14,6 +13,7 @@ import com.google.gson.Gson;
 import com.jorkyin.barley.R;
 import com.jorkyin.barley.activity.RecyclerAdapter.CameraRecyclerAdapter;
 import com.jorkyin.barley.SQL.DatabaseHelper;
+import com.jorkyin.barley.activity.presenter.MainPresenter;
 import com.jorkyin.barley.base.OnClickItemViewListener;
 import com.jorkyin.barley.model.NativeCallBack;
 import com.jorkyin.barley.model.NativeCaller;
@@ -22,10 +22,6 @@ import com.jorkyin.barley.util.P2PParam;
 import com.jorkyin.barley.util.PermissionHandle;
 import com.jorkyin.barley.util.RecyclerItemDecoration;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private ArrayList<P2PParam> mData;
     private CameraRecyclerAdapter adapter;
+    private MainPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         PermissionHandle.requireSomePermission(this);// 申请权限;
-        Log.i(TAG, "onCreate: ");
         recyclerView = findViewById(R.id.camera_Recycler_view);
         findViewById(R.id.main_add_camera).setOnClickListener(new View.OnClickListener() {
 
@@ -54,44 +50,35 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(intent, Const.MAINACTIVITY_AADACTIVITY_TITLE);
             }
         });
-        Log.i(TAG, "onCreate: 3");
         //从数据库里面获取已经添加的设备
         mData = new DatabaseHelper(this).getCamInfo();
-
-        Log.i(TAG, "onCreate: 4");
         //初始化RecyclerView,用于显示item样式
         showView();
-        Log.i(TAG, "onCreate: 5");
         //注册C回调Java方法
         NativeCallBack.getInstance();
-        Log.i(TAG, "onCreate: 6");
         //初始化P2P，并注册回调函数
         NativeCaller.RTSDKInit();
-        Log.i(TAG, "onCreate: 7");
 
-
-        //注册订阅者,用于C回调Java的方法，更新UI
-        EventBus.getDefault().register(this);
+        presenter =new MainPresenter();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        for (int i=0;i<mData.size();i++){
-NativeCaller.StartConnectDev(mData.get(i).getUID(),mData.get(i).getUser(),mData.get(i).getPassword(),"");
-        }
-    }
-
-    //定义处理接收的方法，更新UI
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void userEventBus(P2PParam p2PParam) {
-        for (int i = 0; i < mData.size(); i++) {
-            if (mData.get(i).getUID().equals(p2PParam.getUID())) {
-                mData.get(i).setState(p2PParam.getState());
-                adapter.updateData(mData);
-                break;
+        presenter.onStart(mData);
+        presenter.setP2PStatusCallBackListener(new MainPresenter.P2PStatusCallBackListener() {
+            @Override
+            public void P2PStatusCallBack(String uid, String msgString, int msgValue) {
+                for (int i=0;i<mData.size();i++){
+                    if (uid.equals(mData.get(i).getUID())){
+                        mData.get(i).setStateString(msgString);
+                        mData.get(i).setStateValue(msgValue);
+                        adapter.updateData(mData);
+                        return;
+                    }
+                }
             }
-        }
+        });
     }
 
     @Override
@@ -102,7 +89,6 @@ NativeCaller.StartConnectDev(mData.get(i).getUID(),mData.get(i).getUser(),mData.
                     data.getStringExtra(Const.UID),
                     data.getStringExtra(Const.USER),
                     data.getStringExtra(Const.PASSWORD));
-
             new DatabaseHelper(this).addCamInfo(CamInfo);
             mData.add(CamInfo);
             adapter.updateData(mData);
@@ -112,8 +98,7 @@ NativeCaller.StartConnectDev(mData.get(i).getUID(),mData.get(i).getUser(),mData.
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //注销注册
-        EventBus.getDefault().unregister(this);
+        presenter.onDestroy(mData);
     }
 
     private void showView() {
@@ -122,20 +107,12 @@ NativeCaller.StartConnectDev(mData.get(i).getUID(),mData.get(i).getUser(),mData.
         adapter.setOnClickItemViewListener(new OnClickItemViewListener() {
             @Override
             public void onRecyclerViewItemClick(View view, int position) {
+                if (mData.get(position).getStateValue()==Const.PPPP_STATUS_ON_LINE){
                 switch (view.getId()) {
                     case R.id.item_camera_image:
-                       /* if (mData.get(position).getState() == null) {
-                            NativeCaller.ConnectDev(mData.get(position).getUID(), mData.get(position).getUser(), mData.get(position).getPassword());
-                        } else {
-                            Intent intent = new Intent(MainActivity.this, LiveActivity.class);
-                            intent.putExtra(Const.P2PPARAM, new Gson().toJson(mData.get(position)));
-                            startActivity(intent);
-                        }*/
-
                         Intent intent = new Intent(MainActivity.this, LiveActivity.class);
                         intent.putExtra(Const.P2PPARAM, new Gson().toJson(mData.get(position)));
                         startActivity(intent);
-
                         break;
                     case R.id.item_camera_folder:
                         startActivity(new Intent(MainActivity.this, FolderActivity.class));
@@ -144,6 +121,10 @@ NativeCaller.StartConnectDev(mData.get(i).getUID(),mData.get(i).getUser(),mData.
                         startActivity(new Intent(MainActivity.this, ConfigActivity.class));
                         Toast.makeText(MainActivity.this, position + " item_camera_set", Toast.LENGTH_SHORT).show();
                         break;
+                }
+                }else {
+                    //presenter.p2pConnectDev(mData.get(position));
+                    Toast.makeText(MainActivity.this, "设备连接失败", Toast.LENGTH_SHORT).show();
                 }
             }
         });

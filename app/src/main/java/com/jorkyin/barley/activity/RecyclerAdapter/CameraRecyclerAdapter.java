@@ -48,7 +48,7 @@ public class CameraRecyclerAdapter extends RecyclerView.Adapter<CameraRecyclerAd
         };
 
         holder.item_camera_image.setImageResource(R.drawable.ic_launcher_background);
-        holder.item_camera_state.setText(mData.get(position).getState());
+        holder.item_camera_state.setText(mData.get(position).getStateString());
         holder.item_camera_image.setOnClickListener(onClickListener);
         holder.item_camera_folder.setOnClickListener(onClickListener);
         holder.item_camera_set.setOnClickListener(onClickListener);

@@ -136,7 +136,7 @@ RT_APP_INT32 rtSetMsgReturnCallBack(const RT_APP_CHAR *uid, RT_APP_INT32 msg, RT
 //连接回调
 RT_APP_INT32
 rtConnectCallBack(const RT_APP_CHAR *uid, RT_APP_INT32 msgType, RT_APP_INT32 msgValue) {
-    LOGD("[%s   %d]\n", __FUNCTION__, __LINE__);
+    //LOGD("[%s   %d]\n", __FUNCTION__, __LINE__);
     JNIEnv *env;
     int cRet = RT_GetEnv(&env);
     if (cRet == -1) {
@@ -168,12 +168,12 @@ rtH264VideoPlayerCallBack(const RT_APP_CHAR *uid, RT_APP_UCHAR *pbuf, RT_APP_INT
 
     if (frametype == 1) // P
     {
-        // LOGI("video[P] uid=%s,pbuf=%x,len=%d P[%02d] time[%d] ", uid, pbuf[6], len, pframe++, timestamp - saveTime);
+         LOGI("video[P] uid=%s,pbuf=%x,len=%d P[%02d] time[%d] ", uid, pbuf[6], len, pframe++, timestamp - saveTime);
 
     } else // I
     {
 
-        // LOGI("video[I] uid=%s,pbuf=%x,len=%d", uid, pbuf[6], len, timestamp - saveTime);
+         LOGI("video[I] uid=%s,pbuf=%x,len=%d", uid, pbuf[6], len, timestamp - saveTime);
 
         pframe = 1;
     }

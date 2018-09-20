@@ -1,10 +1,14 @@
 package com.jorkyin.barley.model;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
 import org.greenrobot.eventbus.EventBus;
+
+import static com.jorkyin.barley.util.Const.MSG_NOTIFY_TYPE_PPPP_MODE;
+import static com.jorkyin.barley.util.Const.MSG_NOTIFY_TYPE_PPPP_STATUS;
+import static com.jorkyin.barley.util.Const.MSG_NOTIFY_TYPE_STREAM_TYPE;
+import static com.jorkyin.barley.util.Const.MSG_NOTIFY_TYPE_TALK_STATUS;
 
 public class NativeCallBack {
 
@@ -12,6 +16,10 @@ public class NativeCallBack {
     public final static String CALLBACKTYPE = "CallBackType";
     public final static class CallBackType{
         public final static String CALL_BACK_TYPE_CAMERA_SEARCH = "call_back_type_camera_search";
+        public final static String CALL_BACK_TYPE_P2P_STATUS = "call_back_type_p2p_status";
+        public final static String CALL_BACK_TYPE_P2P_MODE = "call_back_type_p2p_mode";
+        public final static String CALL_BACK_TYPE_CAMERA_STREAM_TYPE = "call_back_type_camera_strera_type";
+        public final static String CALL_BACK_TYPE_CAMERA_TALK_STATUS= "call_back_type_camera_talk_status";
     }
     private static NativeCallBack mNativeCallBack;
 
@@ -53,7 +61,25 @@ public class NativeCallBack {
     private void CallBack_ConnectDev(String uid, int msgTye,int msgValue) {
         Log.i(TAG, "CallBack_SearchResult: uid="+uid+" msgTye="+msgTye
                 +" msgValue="+msgValue);
-
+        EventBus mEventBus = EventBus.getDefault();
+        Bundle bundle = new Bundle();
+        bundle.putString("uid", uid);
+        bundle.putInt("msgValue", msgValue);
+        switch (msgTye){
+            case MSG_NOTIFY_TYPE_PPPP_STATUS: /* p2p连接状态*/
+                bundle.putString(CALLBACKTYPE, CallBackType.CALL_BACK_TYPE_P2P_STATUS);
+                break;
+            case MSG_NOTIFY_TYPE_PPPP_MODE:   /* p2p类型*/
+                bundle.putString(CALLBACKTYPE, CallBackType.CALL_BACK_TYPE_P2P_MODE);
+                break;
+            case MSG_NOTIFY_TYPE_STREAM_TYPE:  //视频流类型
+                bundle.putString(CALLBACKTYPE, CallBackType.CALL_BACK_TYPE_CAMERA_STREAM_TYPE);
+                break;
+            case MSG_NOTIFY_TYPE_TALK_STATUS:  /*音频对讲*/
+                bundle.putString(CALLBACKTYPE, CallBackType.CALL_BACK_TYPE_CAMERA_TALK_STATUS);
+                break;
+        }
+        mEventBus.post(bundle);
     }
 
 }

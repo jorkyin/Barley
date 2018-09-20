@@ -36,7 +36,7 @@ public class SearchRecyclerAdpter extends RecyclerView.Adapter<SearchRecyclerAdp
 
         holder.item_search_uid.setText(mData.get(position).getUID());
         holder.item_search_ip.setText(mData.get(position).getIP());
-        holder.item_search_state.setText(mData.get(position).getState());
+        holder.item_search_state.setText(mData.get(position).getStateString());
 
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
