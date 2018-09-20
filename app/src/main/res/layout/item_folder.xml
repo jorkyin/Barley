@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/item_folder_year"
+        android:layout_width="38dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:text="2018"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/item_folder_calendar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_alignLeft="@+id/item_folder_year"
+        android:layout_alignStart="@+id/item_folder_year"
+        android:layout_below="@+id/item_folder_year"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="01/02"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_folder_year"
+        tools:ignore="MissingConstraints"
+        android:layout_marginLeft="8dp" />
+
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="1px"
+        android:layout_height="219dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@+id/item_folder_calendar"
+        android:layout_toRightOf="@+id/item_folder_calendar"
+        android:background="@color/colorPrimary"
+        app:layout_constraintStart_toEndOf="@+id/item_folder_calendar"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="0dp"
+        android:layout_marginLeft="8dp" />
+
+    <TextView
+        android:id="@+id/item_folder_time"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_toEndOf="@+id/view"
+        android:layout_toRightOf="@+id/view"
+        android:text="9:00-10:00"
+        app:layout_constraintStart_toEndOf="@+id/view"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteY="8dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/item_folder_photo"
+        android:layout_width="310dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/item_folder_time"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignStart="@+id/item_folder_time"
+        android:layout_alignTop="@+id/item_folder_calendar"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:numColumns="3"
+        app:layout_constraintStart_toEndOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/item_folder_time"
+        android:layout_marginLeft="8dp" />
+</android.support.constraint.ConstraintLayout>

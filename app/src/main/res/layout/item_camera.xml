@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageView
+        android:id="@+id/item_camera_image"
+        android:layout_width="match_parent"
+       android:focusable="false"
+        android:layout_height="205dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+       android:background="#000000"/>
+
+    <TextView
+        android:id="@+id/item_camera_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_below="@+id/item_camera_image"
+        android:layout_centerHorizontal="true"
+        android:text="状态" />
+
+    <ImageView
+        android:focusable="false"
+        android:id="@+id/item_camera_folder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/item_camera_state"
+        android:layout_alignStart="@+id/item_camera_state"
+        android:layout_below="@+id/item_camera_state"
+        app:srcCompat="@mipmap/album_title_icon"/>
+
+    <ImageView
+        android:focusable="false"
+        android:id="@+id/item_camera_set"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/item_camera_state"
+        android:layout_alignRight="@+id/item_camera_state"
+        android:layout_below="@+id/item_camera_state"
+        app:srcCompat="@mipmap/set" />
+
+</RelativeLayout>

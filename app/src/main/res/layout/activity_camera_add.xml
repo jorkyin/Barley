@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.jorkyin.barley.activity.ui.AddActivity">
+    <include
+        android:id="@+id/title_layout"
+        layout="@layout/public_header" />
+    <EditText
+        android:id="@+id/camera_add_name_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="IPCAM" />
+    <EditText
+        android:id="@+id/camera_add_uid_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="uid" />
+
+
+    <EditText
+        android:id="@+id/camera_add_user_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="admin" />
+
+    <EditText
+        android:id="@+id/camera_add_password_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="admin" />
+
+    <Button
+        android:id="@+id/camera_add_Search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="搜索" />
+
+    <Button
+        android:id="@+id/camera_add_scan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="二维码" />
+
+    <Button
+        android:id="@+id/camera_add_enter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="确定" />
+
+</LinearLayout>

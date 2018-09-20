@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jorkyin.barley.activity.ui.LiveActivity">
+
+    <TextView
+        android:id="@+id/live_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/live_surfacView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:text="                      " />
+
+    <TextView
+        android:id="@+id/live_networkSpeed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/live_surfacView"
+        android:layout_toEndOf="@+id/live_state"
+        android:layout_toRightOf="@+id/live_state"
+        android:text="                      " />
+
+    <ImageView
+        android:id="@+id/live_back"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:src="@mipmap/icon_return" />
+
+    <SurfaceView
+        android:id="@+id/live_surfacView"
+        android:layout_width="match_parent"
+        android:layout_height="191dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true" />
+
+    <ImageView
+        android:id="@+id/live_full_or_portrait"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/live_surfacView"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:src="@mipmap/magnify_white" />
+
+    <ImageView
+        android:id="@+id/live_photo"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="62dp"
+        android:layout_marginLeft="68dp"
+        android:layout_marginStart="68dp"
+        android:src="@mipmap/bt_ic_camera" />
+
+    <ImageView
+        android:id="@+id/live_rec"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_alignTop="@+id/live_photo"
+        android:layout_marginEnd="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_toLeftOf="@+id/live_full_or_portrait"
+        android:layout_toStartOf="@+id/live_full_or_portrait"
+        android:src="@mipmap/video"
+        tools:ignore="MissingConstraints" />
+
+
+</RelativeLayout>
